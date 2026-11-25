@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>401k Early Withdrawal Calculator — Taxes &amp; 10% Penalty</title>
+  <meta name="description" content="Use our free 401k early withdrawal calculator to estimate federal tax, state tax, the 10% IRS penalty, and net cash before age 59.5." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://example.com/401k-early-withdrawal-calculator" />
+
+  <!-- Open Graph & Social Meta -->
+  <meta property="og:title" content="401k Early Withdrawal Calculator — Taxes &amp; 10% Penalty" />
+  <meta property="og:description" content="Use our free 401k early withdrawal calculator to estimate federal tax, state tax, the 10% IRS penalty, and net cash before age 59.5." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="ClearLedger Retirement Tools" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="401k Early Withdrawal Calculator — Taxes &amp; 10% Penalty" />
+  <meta name="twitter:description" content="Calculate federal income tax, state tax, the 10% IRS penalty, and long-term opportunity cost before cashing out a 401(k)." />
+
+  <!-- Inline SVG Favicon (Dollar Shield Mark) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 4L10 13v16c0 14.5 9.4 27.6 22 31 12.6-3.4 22-16.5 22-31V13L32 4z' fill='%230f172a'/%3E%3Cpath d='M32 9.2L15 16.2v12.8c0 11.7 7.4 22.3 17 25.4 9.6-3.1 17-13.7 17-25.4V16.2L32 9.2z' fill='%23059669'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-family='system-ui, -apple-system, sans-serif' font-size='28' font-weight='700' fill='%23ffffff'%3E%24%3C/text%3E%3C/svg%3E" />
+
+  <!-- JSON-LD Structured Data: WebApplication + FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "401k Early Withdrawal Calculator",
+        "url": "https://example.com/401k-early-withdrawal-calculator",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "All",
+        "browserRequirements": "Requires JavaScript",
+        "description": "Interactive US 401k early withdrawal calculator that estimates federal income tax, state income tax, the 10% IRS early distribution penalty, net take-home cash, and age-65 compounding opportunity cost.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How much tax on 401k withdrawal before 59.5 will I owe?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Most people under age 59.5 lose 30% to 45% of a traditional 401(k) cash-out. You owe ordinary federal income tax at your marginal rate (10% to 37%), applicable state income tax (0% to 13.3%), and a 10% IRS early withdrawal penalty unless you qualify for a specific exception."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can an early 401(k) withdrawal push me into a higher federal tax bracket?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Pre-tax 401(k) distributions are added on top of your W-2 wages and other taxable income for the year. A large cash-out can push the top portion of your income into the next marginal federal or state bracket, increasing the effective tax rate on those dollars."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why did my plan provider only withhold 20% when my total tax and penalty are higher?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Federal rules require 401(k) administrators to withhold a flat 20% for federal income tax on cash distributions sent directly to you. That 20% is only an upfront deposit, not your final liability. Any remaining federal tax, the 10% early withdrawal penalty, and state taxes are settled when you file your tax return."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is a 401(k) loan better than taking an early withdrawal?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "If your employer plan allows loans and your job is stable, a 401(k) loan generally costs far less because you avoid both ordinary income tax and the 10% penalty while repaying interest to your own account. The risk is that leaving your job usually accelerates repayment; any unpaid balance becomes a taxable distribution."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I owe taxes and the 10% penalty on a Roth 401(k) early withdrawal?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Roth 401(k) early withdrawals follow pro-rata rules. Each dollar withdrawn is split proportionally between your after-tax contributions (which come out tax- and penalty-free) and your investment earnings (which are subject to ordinary income tax and the 10% early withdrawal penalty before age 59.5)."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg-page: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --border-hairline: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-primary: #0f172a;
+      --text-body: #334155;
+      --text-muted: #475569;
+      --text-quiet: #64748b;
+      --emerald: #059669;
+      --emerald-dark: #047857;
+      --emerald-bg: #ecfdf5;
+      --emerald-border: #a7f3d0;
+      --red: #dc2626;
+      --red-dark: #b91c1c;
+      --red-bg: #fef2f2;
+      --red-border: #fecaca;
+      --amber-bg: #fffbeb;
+      --amber-border: #fde68a;
+      --amber-text: #92400e;
+      --navy-hover: #1e293b;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 8px;
+      --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--text-body);
+      background-color: var(--bg-page);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--text-primary);
+      color: #ffffff;
+      padding: 10px 16px;
+      font-weight: 600;
+      z-index: 100;
+      text-decoration: none;
+    }
+    .skip-link:focus {
+      left: 12px;
+      top: 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header — strict 3-zone single row */
+    .site-header {
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      min-height: 68px;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .site-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+      transition: color 150ms ease, border-color 150ms ease;
+    }
+
+    .site-nav a:hover,
+    .site-nav a:focus-visible {
+      color: var(--text-primary);
+      border-bottom-color: var(--emerald);
+      outline: none;
+    }
+
+    .header-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 18px;
+      background-color: var(--text-primary);
+      color: #ffffff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background-color 150ms ease;
+    }
+
+    .header-cta:hover,
+    .header-cta:focus-visible {
+      background-color: var(--navy-hover);
+      outline: 2px solid var(--emerald);
+      outline-offset: 2px;
+    }
+
+    /* Hero Intro */
+    .hero-section {
+      padding: 26px 0 20px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      color: var(--text-quiet);
+      margin-bottom: 8px;
+    }
+
+    .hero-section h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.875rem, 3.2vw, 2.5rem);
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      text-wrap: balance;
+    }
+
+    .hero-lead {
+      margin: 0;
+      max-width: 74ch;
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--text-body);
+    }
+
+    /* Calculator Two-Column Layout */
+    .calculator-section {
+      padding-bottom: 48px;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.015em;
+    }
+
+    .reset-btn {
+      background: transparent;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+    }
+
+    .reset-btn:hover,
+    .reset-btn:focus-visible {
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+      background-color: var(--bg-subtle);
+      outline: none;
+    }
+
+    /* Form Controls */
+    .field-group {
+      margin-bottom: 16px;
+    }
+
+    .field-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .field-hint-inline {
+      font-size: 0.8125rem;
+      color: var(--text-quiet);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-prefix,
+    .input-suffix {
+      position: absolute;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-quiet);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .input-prefix {
+      left: 14px;
+    }
+
+    .input-suffix {
+      right: 14px;
+    }
+
+    .text-input,
+    .select-input {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-primary);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+
+    .text-input.has-prefix {
+      padding-left: 30px;
+    }
+
+    .text-input.has-suffix {
+      padding-right: 34px;
+    }
+
+    .text-input:hover,
+    .select-input:hover {
+      border-color: #94a3b8;
+    }
+
+    .text-input:focus-visible,
+    .select-input:focus-visible {
+      outline: none;
+      border-color: var(--emerald);
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.16);
+    }
+
+    /* Range Slider */
+    .slider-wrap {
+      margin-top: 12px;
+    }
+
+    .range-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(
+        to right,
+        var(--emerald) 0%,
+        var(--emerald) var(--slider-pct, 4.8%),
+        var(--border-hairline) var(--slider-pct, 4.8%),
+        var(--border-hairline) 100%
+      );
+      cursor: pointer;
+    }
+
+    .range-slider:focus-visible {
+      outline: 2px solid var(--emerald);
+      outline-offset: 4px;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      border: 3px solid #ffffff;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.35);
+      cursor: pointer;
+      transition: transform 150ms ease;
+    }
+
+    .range-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.08);
+    }
+
+    .range-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      border: 3px solid #ffffff;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.35);
+      cursor: pointer;
+    }
+
+    .slider-scale {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: var(--text-quiet);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .preset-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .preset-btn {
+      min-height: 36px;
+      padding: 6px 8px;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-body);
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      white-space: nowrap;
+      text-align: center;
+      transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+    }
+
+    .preset-btn:hover,
+    .preset-btn:focus-visible {
+      background-color: #e2e8f0;
+      color: var(--text-primary);
+      outline: none;
+    }
+
+    .preset-btn[aria-pressed="true"] {
+      background-color: var(--text-primary);
+      border-color: var(--text-primary);
+      color: #ffffff;
+    }
+
+    .two-col-inputs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field-note {
+      margin: 6px 0 0;
+      font-size: 0.8125rem;
+      line-height: 1.45;
+      color: var(--text-quiet);
+    }
+
+    /* Exception Checkbox */
+    .checkbox-field {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: border-color 150ms ease, background-color 150ms ease;
+    }
+
+    .checkbox-field:hover {
+      border-color: var(--border-strong);
+    }
+
+    .checkbox-field input[type="checkbox"] {
+      width: 19px;
+      height: 19px;
+      margin: 2px 0 0;
+      accent-color: var(--emerald);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .checkbox-label-text {
+      font-size: 0.875rem;
+      line-height: 1.45;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .checkbox-subnote {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.8125rem;
+      color: var(--text-quiet);
+      font-weight: 400;
+    }
+
+    /* Results Panel */
+    .net-hero-box {
+      padding: 16px 20px;
+      background-color: var(--emerald-bg);
+      border: 1px solid var(--emerald-border);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+    }
+
+    .net-hero-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .net-hero-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--emerald-dark);
+    }
+
+    .net-hero-share {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--emerald-dark);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .net-hero-value {
+      font-size: clamp(1.875rem, 3.6vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--emerald);
+      font-variant-numeric: tabular-nums;
+      margin: 0;
+    }
+
+    /* Pure-CSS Stacked Bar */
+    .bar-block {
+      margin-bottom: 16px;
+    }
+
+    .bar-legend {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .legend-kept {
+      color: var(--emerald-dark);
+    }
+
+    .legend-lost {
+      color: var(--red-dark);
+    }
+
+    .stacked-track {
+      display: flex;
+      width: 100%;
+      height: 12px;
+      background-color: var(--bg-subtle);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border-hairline);
+    }
+
+    .stacked-kept {
+      background-color: var(--emerald);
+      height: 100%;
+      transition: flex-basis 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .stacked-lost {
+      background-color: var(--red);
+      height: 100%;
+      transition: flex-basis 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Breakdown Rows */
+    .breakdown-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--border-hairline);
+    }
+
+    .breakdown-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border-hairline);
+      font-size: 0.9375rem;
+    }
+
+    .breakdown-item-label {
+      color: var(--text-body);
+    }
+
+    .breakdown-rate {
+      display: inline-block;
+      margin-left: 6px;
+      font-size: 0.8125rem;
+      color: var(--text-quiet);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .breakdown-amount {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .breakdown-amount.is-loss {
+      color: var(--red);
+    }
+
+    .breakdown-item.is-total {
+      padding: 11px 14px;
+      margin: 10px 0 0;
+      background-color: var(--red-bg);
+      border: 1px solid var(--red-border);
+      border-radius: var(--radius-md);
+    }
+
+    .breakdown-item.is-total .breakdown-item-label {
+      font-weight: 700;
+      color: var(--red-dark);
+    }
+
+    .breakdown-item.is-total .breakdown-amount {
+      font-size: 1.0625rem;
+      color: var(--red);
+    }
+
+    /* Withholding Note Strip */
+    .withholding-strip {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      font-size: 0.8125rem;
+      line-height: 1.45;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .withholding-strip strong {
+      color: var(--text-primary);
+    }
+
+    /* Opportunity Cost Callout (No thick left accent border) */
+    .opportunity-callout {
+      margin-top: 12px;
+      padding: 14px 16px;
+      background-color: var(--amber-bg);
+      border: 1px solid var(--amber-border);
+      border-radius: var(--radius-md);
+    }
+
+    .opportunity-heading {
+      margin: 0 0 4px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--amber-text);
+    }
+
+    .opportunity-value {
+      margin: 0 0 4px;
+      font-size: 1.375rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .opportunity-detail {
+      margin: 0;
+      font-size: 0.8125rem;
+      line-height: 1.45;
+      color: var(--text-body);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Editorial Guide Sections */
+    .editorial-wrap {
+      background-color: var(--bg-surface);
+      border-top: 1px solid var(--border-hairline);
+      padding: 64px 0;
+    }
+
+    .editorial-container {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .content-article {
+      margin-bottom: 52px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .content-article:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .content-article h2 {
+      margin: 0 0 16px;
+      font-size: clamp(1.375rem, 2.5vw, 1.75rem);
+      line-height: 1.25;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      text-wrap: balance;
+    }
+
+    .content-article h3 {
+      margin: 24px 0 8px;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .content-article p {
+      margin: 0 0 16px;
+      color: var(--text-body);
+    }
+
+    .content-article p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Example Breakdown Table */
+    .example-table-wrap {
+      margin: 24px 0;
+      overflow-x: auto;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+    }
+
+    .example-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9375rem;
+      font-variant-numeric: tabular-nums;
+      background-color: var(--bg-surface);
+    }
+
+    .example-table th,
+    .example-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .example-table thead th {
+      background-color: var(--bg-page);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .example-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .example-table .num-col {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .example-table .row-loss td {
+      color: var(--red-dark);
+      font-weight: 700;
+      background-color: var(--red-bg);
+    }
+
+    .example-table .row-net td {
+      color: var(--emerald-dark);
+      font-weight: 700;
+      background-color: var(--emerald-bg);
+    }
+
+    /* Exceptions List */
+    .exception-list {
+      margin: 20px 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 14px;
+    }
+
+    .exception-list li {
+      padding: 16px 20px;
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+    }
+
+    .exception-list strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.975rem;
+      color: var(--text-primary);
+    }
+
+    /* FAQ Accordion */
+    .faq-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-page);
+      transition: border-color 150ms ease;
+    }
+
+    .faq-item[open] {
+      background-color: var(--bg-surface);
+      border-color: var(--border-strong);
+    }
+
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-primary);
+      min-height: 52px;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item summary:focus-visible {
+      outline: 2px solid var(--emerald);
+      outline-offset: -2px;
+      border-radius: var(--radius-md);
+    }
+
+    .faq-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: var(--text-quiet);
+      transition: transform 180ms ease;
+    }
+
+    .faq-item[open] .faq-icon {
+      transform: rotate(180deg);
+      color: var(--text-primary);
+    }
+
+    .faq-answer {
+      padding: 0 20px 18px;
+      color: var(--text-body);
+      font-size: 0.9375rem;
+      line-height: 1.65;
+    }
+
+    .faq-answer p {
+      margin: 0;
+    }
+
+    /* Footer */
+    .site-footer {
+      background-color: var(--text-primary);
+      color: #cbd5e1;
+      padding: 44px 0;
+      font-size: 0.875rem;
+    }
+
+    .footer-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      margin-bottom: 24px;
+    }
+
+    .footer-brand {
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.015em;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: #cbd5e1;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .footer-links a:hover,
+    .footer-links a:focus-visible {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .footer-disclaimer {
+      margin: 0 0 12px;
+      line-height: 1.6;
+      color: #94a3b8;
+      max-width: 85ch;
+    }
+
+    .footer-copy {
+      margin: 0;
+      color: #64748b;
+      font-size: 0.8125rem;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 900px) {
+      .calc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .site-nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 0 16px;
+      }
+
+      .hero-section {
+        padding: 28px 0 20px;
+      }
+
+      .panel {
+        padding: 20px;
+      }
+
+      .two-col-inputs {
+        grid-template-columns: 1fr;
+      }
+
+      .net-hero-box {
+        padding: 18px;
+      }
+
+      .editorial-wrap {
+        padding: 44px 0;
+      }
+
+      .header-inner {
+        min-height: 60px;
+        gap: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to calculator</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#calculator" class="brand-link" aria-label="ClearLedger Retirement Home">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M32 4L10 13v16c0 14.5 9.4 27.6 22 31 12.6-3.4 22-16.5 22-31V13L32 4z" fill="#0f172a" />
+          <path d="M32 9.2L15 16.2v12.8c0 11.7 7.4 22.3 17 25.4 9.6-3.1 17-13.7 17-25.4V16.2L32 9.2z" fill="#059669" />
+          <text x="32" y="41" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="700" fill="#ffffff">$</text>
+        </svg>
+        <span>ClearLedger 401k</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Page sections">
+        <a href="#calculator">Calculator</a>
+        <a href="#tax-breakdown">Tax Rules</a>
+        <a href="#withholding-trap">20% Withholding</a>
+        <a href="#penalty-exceptions">Exceptions</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <a href="#calculator" class="header-cta">Calculate Now</a>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero-section" aria-labelledby="page-heading">
+      <div class="container">
+        <div class="hero-meta">
+          <span>US Tax Rules</span>
+          <span aria-hidden="true">&middot;</span>
+          <span>IRS Section 72(t)</span>
+          <span aria-hidden="true">&middot;</span>
+          <span>Free Estimate</span>
+        </div>
+        <h1 id="page-heading">401k Early Withdrawal Calculator</h1>
+        <p class="hero-lead">
+          Use this 401k early withdrawal calculator to see how much cash you actually take home before age 59.5 after federal income taxes, state taxes, and the 10% IRS early distribution penalty—plus what that money could grow into by age 65 if left invested.
+        </p>
+      </div>
+    </section>
+
+    <section id="calculator" class="calculator-section" aria-label="401k Early Withdrawal Estimator">
+      <div class="container">
+        <div class="calc-grid">
+          <!-- Left Column: Inputs -->
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Withdrawal Details</h2>
+              <button type="button" id="reset-defaults" class="reset-btn">Reset Defaults</button>
+            </div>
+
+            <form id="withdrawal-form" novalidate>
+              <!-- 1. Withdrawal Amount -->
+              <div class="field-group">
+                <div class="field-label-row">
+                  <label for="withdrawal-amount" class="field-label">Withdrawal Amount</label>
+                  <span class="field-hint-inline" id="amount-range-hint">$1,000 – $500,000</span>
+                </div>
+                <div class="input-wrap">
+                  <span class="input-prefix" aria-hidden="true">$</span>
+                  <input
+                    type="number"
+                    id="withdrawal-amount"
+                    name="withdrawalAmount"
+                    class="text-input has-prefix"
+                    min="0"
+                    max="10000000"
+                    step="500"
+                    value="25000"
+                    inputmode="numeric"
+                    aria-describedby="amount-range-hint"
+                  />
+                </div>
+
+                <div class="slider-wrap">
+                  <input
+                    type="range"
+                    id="withdrawal-slider"
+                    class="range-slider"
+                    min="1000"
+                    max="500000"
+                    step="500"
+                    value="25000"
+                    aria-label="Withdrawal amount slider"
+                  />
+                  <div class="slider-scale" aria-hidden="true">
+                    <span>$1,000</span>
+                    <span>$250,000</span>
+                    <span>$500,000</span>
+                  </div>
+                </div>
+
+                <div class="preset-row" role="group" aria-label="Quick withdrawal amounts">
+                  <button type="button" class="preset-btn" data-amount="10000" aria-pressed="false">$10,000</button>
+                  <button type="button" class="preset-btn" data-amount="20000" aria-pressed="false">$20,000</button>
+                  <button type="button" class="preset-btn" data-amount="50000" aria-pressed="false">$50,000</button>
+                  <button type="button" class="preset-btn" data-amount="100000" aria-pressed="false">$100,000</button>
+                </div>
+              </div>
+
+              <!-- 2 & 3. Age & Federal Tax Bracket -->
+              <div class="two-col-inputs">
+                <div class="field-group">
+                  <label for="current-age" class="field-label">Your Current Age</label>
+                  <div class="input-wrap">
+                    <input
+                      type="number"
+                      id="current-age"
+                      name="currentAge"
+                      class="text-input"
+                      min="18"
+                      max="95"
+                      step="0.5"
+                      value="35"
+                      inputmode="decimal"
+                      aria-describedby="age-note"
+                    />
+                  </div>
+                  <p id="age-note" class="field-note">10% penalty applies under age 59.5.</p>
+                </div>
+
+                <div class="field-group">
+                  <label for="federal-bracket" class="field-label">Federal Tax Bracket</label>
+                  <select id="federal-bracket" name="federalBracket" class="select-input">
+                    <option value="10">10% Federal Rate</option>
+                    <option value="12">12% Federal Rate</option>
+                    <option value="22" selected>22% Federal Rate</option>
+                    <option value="24">24% Federal Rate</option>
+                    <option value="32">32% Federal Rate</option>
+                    <option value="35">35% Federal Rate</option>
+                    <option value="37">37% Federal Rate</option>
+                  </select>
+                  <p class="field-note">Use your top marginal IRS rate.</p>
+                </div>
+              </div>
+
+              <!-- 4. State Income Tax Rate -->
+              <div class="field-group">
+                <div class="field-label-row">
+                  <label for="state-tax-rate" class="field-label">State Income Tax Rate</label>
+                  <span class="field-hint-inline">0% – 13.3% typical</span>
+                </div>
+                <div class="input-wrap">
+                  <input
+                    type="number"
+                    id="state-tax-rate"
+                    name="stateTaxRate"
+                    class="text-input has-suffix"
+                    min="0"
+                    max="20"
+                    step="0.1"
+                    value="5"
+                    inputmode="decimal"
+                    aria-describedby="state-tax-note"
+                  />
+                  <span class="input-suffix" aria-hidden="true">%</span>
+                </div>
+                <p id="state-tax-note" class="field-note">
+                  Enter 0% if you live in a state with no income tax, including TX, FL, WA, NV, TN, WY, SD, or AK.
+                </p>
+              </div>
+
+              <!-- 5. IRS Penalty Exception Toggle -->
+              <div class="field-group">
+                <label class="checkbox-field" for="penalty-exception">
+                  <input type="checkbox" id="penalty-exception" name="penaltyException" />
+                  <span class="checkbox-label-text">
+                    I qualify for a 10% penalty exception (e.g., Rule of 55, disability, qualified medical expenses)
+                    <span class="checkbox-subnote" id="exception-status-note">
+                      Waives the 10% IRS penalty. Ordinary federal and state income taxes still apply.
+                    </span>
+                  </span>
+                </label>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right Column: Real-Time Results -->
+          <div class="panel" aria-live="polite" aria-atomic="false">
+            <div class="panel-header">
+              <h2 class="panel-title">Estimated Payout &amp; Tax Hit</h2>
+              <span class="field-hint-inline" id="summary-gross-label">From $25,000 gross</span>
+            </div>
+
+            <div class="net-hero-box">
+              <div class="net-hero-top">
+                <span class="net-hero-label">Net Cash You Keep</span>
+                <span class="net-hero-share" id="net-keep-pct">63.0% of withdrawal</span>
+              </div>
+              <p class="net-hero-value" id="out-net-cash">$15,750</p>
+            </div>
+
+            <!-- Pure-CSS Visual Breakdown Bar -->
+            <div class="bar-block">
+              <div class="bar-legend">
+                <span class="legend-kept" id="bar-label-kept">Net Cash Kept: 63.0%</span>
+                <span class="legend-lost" id="bar-label-lost">Taxes &amp; Penalty Lost: 37.0%</span>
+              </div>
+              <div
+                class="stacked-track"
+                role="img"
+                id="breakdown-bar-track"
+                aria-label="Visual split: 63.0% net cash kept versus 37.0% lost to taxes and penalty"
+              >
+                <div class="stacked-kept" id="bar-kept" style="flex-basis: 63%;"></div>
+                <div class="stacked-lost" id="bar-lost" style="flex-basis: 37%;"></div>
+              </div>
+            </div>
+
+            <!-- Itemized Tax & Penalty Breakdown -->
+            <ul class="breakdown-list">
+              <li class="breakdown-item">
+                <span class="breakdown-item-label">
+                  10% Early Withdrawal Penalty
+                  <span class="breakdown-rate" id="out-penalty-note">(10% under age 59.5)</span>
+                </span>
+                <span class="breakdown-amount is-loss" id="out-penalty">-$2,500</span>
+              </li>
+              <li class="breakdown-item">
+                <span class="breakdown-item-label">
+                  Estimated Federal Income Tax
+                  <span class="breakdown-rate" id="out-federal-rate">(22%)</span>
+                </span>
+                <span class="breakdown-amount is-loss" id="out-federal">-$5,500</span>
+              </li>
+              <li class="breakdown-item">
+                <span class="breakdown-item-label">
+                  Estimated State Income Tax
+                  <span class="breakdown-rate" id="out-state-rate">(5.0%)</span>
+                </span>
+                <span class="breakdown-amount is-loss" id="out-state">-$1,250</span>
+              </li>
+              <li class="breakdown-item is-total">
+                <span class="breakdown-item-label">
+                  Total Taxes &amp; Penalties
+                  <span class="breakdown-rate" id="out-effective-loss">(37.0% effective loss)</span>
+                </span>
+                <span class="breakdown-amount is-loss" id="out-total-lost">-$9,250</span>
+              </li>
+            </ul>
+
+            <div class="withholding-strip" id="out-withholding-note">
+              <strong>Plan withholding preview:</strong> Your provider typically withholds 20% ($5,000) upfront for federal tax, leaving an estimated <strong>$4,250</strong> still owed when you file your federal and state returns.
+            </div>
+
+            <!-- Opportunity Cost Callout -->
+            <aside class="opportunity-callout" aria-label="Long-term compounding opportunity cost">
+              <h3 class="opportunity-heading">Age-65 Opportunity Cost (7% Annual Return)</h3>
+              <p class="opportunity-value" id="out-future-value">$190,306</p>
+              <p class="opportunity-detail" id="out-opportunity-text">
+                Leaving $25,000 invested for 30 years until age 65 at a 7% average annual return could grow to $190,306—meaning this withdrawal forfeits $165,306 in compounded growth.
+              </p>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- High-Value Educational Content -->
+    <div class="editorial-wrap">
+      <div class="container editorial-container">
+
+        <!-- Section 1: Secondary Keyword H2 -->
+        <article id="tax-breakdown" class="content-article">
+          <h2>How Much Tax on 401k Withdrawal Before 59.5?</h2>
+          <p>
+            When people ask how much tax on 401k withdrawal before 59.5 they will actually owe, they are often caught off guard by how quickly three separate charges stack up. Because traditional 401(k) contributions go in pre-tax, the IRS treats an early cash-out as ordinary taxable income—and adds a steep surcharge for breaking the retirement seal early.
+          </p>
+
+          <h3>1. Federal Ordinary Income Tax (10% to 37%)</h3>
+          <p>
+            Every dollar you pull out of a traditional 401(k) gets added directly on top of your wages, freelance earnings, and other taxable income for that calendar year. That means your distribution is taxed at your marginal federal tax bracket, not your average rate. A large withdrawal can even spill over into the next bracket up.
+          </p>
+
+          <h3>2. State Income Tax (0% to 13.3%)</h3>
+          <p>
+            Unless you live in a no-income-tax state like Texas, Florida, Washington, or Nevada, your state revenue department will tax the withdrawal as regular income too. A handful of states also tack on their own early distribution penalty—California, for instance, charges an extra 2.5% state penalty on non-qualified early distributions.
+          </p>
+
+          <h3>3. The 10% IRS Early Withdrawal Penalty</h3>
+          <p>
+            Under Internal Revenue Code Section 72(t), taking cash out before age 59.5 triggers a flat 10% federal penalty on the taxable distribution. You report and pay this penalty on IRS Form 5329 with your annual tax return unless you document a qualifying exception.
+          </p>
+
+          <h3>Real-World Example: Cashing Out $20,000 at Age 35</h3>
+          <p>
+            Suppose you are 35 years old, sit in the 22% federal tax bracket, live in a state with a 5% income tax, and cash out $20,000 without a penalty exception. Here is where every dollar goes:
+          </p>
+
+          <div class="example-table-wrap">
+            <table class="example-table">
+              <thead>
+                <tr>
+                  <th scope="col">Line Item</th>
+                  <th scope="col" class="num-col">Rate</th>
+                  <th scope="col" class="num-col">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Gross 401(k) Withdrawal</td>
+                  <td class="num-col">100.0%</td>
+                  <td class="num-col">$20,000</td>
+                </tr>
+                <tr>
+                  <td>Federal Ordinary Income Tax</td>
+                  <td class="num-col">22.0%</td>
+                  <td class="num-col">-$4,400</td>
+                </tr>
+                <tr>
+                  <td>State Income Tax</td>
+                  <td class="num-col">5.0%</td>
+                  <td class="num-col">-$1,000</td>
+                </tr>
+                <tr>
+                  <td>IRS Early Withdrawal Penalty (Under 59.5)</td>
+                  <td class="num-col">10.0%</td>
+                  <td class="num-col">-$2,000</td>
+                </tr>
+                <tr class="row-loss">
+                  <td>Total Taxes &amp; Penalties Lost</td>
+                  <td class="num-col">37.0%</td>
+                  <td class="num-col">-$7,400</td>
+                </tr>
+                <tr class="row-net">
+                  <td>Net Cash You Keep</td>
+                  <td class="num-col">63.0%</td>
+                  <td class="num-col">$12,600</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            Out of a $20,000 distribution, $7,400 disappears to federal tax, state tax, and the early penalty, leaving $12,600 in your pocket. Worse still, that $20,000 left in a broad index fund averaging 7% a year for 30 years would have grown to more than $152,000 by age 65.
+          </p>
+        </article>
+
+        <!-- Section 2: 20% Mandatory Withholding Trap -->
+        <article id="withholding-trap" class="content-article">
+          <h2>The 20% Mandatory Withholding Trap</h2>
+          <p>
+            If you request a direct cash payout from an old or current employer's 401(k) instead of rolling it into an IRA, your plan custodian is legally required under IRS rules to withhold 20% for federal income taxes before sending you a check.
+          </p>
+          <p>
+            Many savers mistakenly assume that 20% covers their entire tax bill. It rarely does. Using the $20,000 example above, your plan administrator sends $4,000 straight to the IRS and deposits $16,000 into your bank account. Come tax season, however, your actual federal tax ($4,400) plus the 10% early withdrawal penalty ($2,000) totals $6,400—meaning you still owe the IRS another $2,400 in April, on top of your $1,000 state tax bill.
+          </p>
+          <p>
+            The flip side also holds true: if you are in the 10% or 12% federal bracket and qualify for a penalty exception, that mandatory 20% withholding exceeds what you actually owe federally, and the IRS refunds the difference when you file your Form 1040. Either way, treat the 20% withholding as an estimated prepayment—never as the final cost.
+          </p>
+        </article>
+
+        <!-- Section 3: IRS Exceptions -->
+        <article id="penalty-exceptions" class="content-article">
+          <h2>IRS Exceptions to the 10% Early Withdrawal Penalty</h2>
+          <p>
+            Congress carved out specific scenarios where you can tap a 401(k) before age 59.5 without paying the 10% penalty. Remember that these rules waive only the penalty—you still owe ordinary federal and state income taxes on pre-tax dollars.
+          </p>
+
+          <ul class="exception-list">
+            <li>
+              <strong>The Rule of 55</strong>
+              If you leave your job (voluntarily or due to a layoff) during or after the calendar year you turn 55, you can withdraw penalty-free from that specific employer's 401(k). Qualified public safety workers (such as firefighters, police officers, and federal law enforcement) qualify starting at age 50 or after 25 years of service. This rule does not apply to IRAs or 401(k)s from earlier employers.
+            </li>
+            <li>
+              <strong>Substantially Equal Periodic Payments (SEPP / Rule 72(t))</strong>
+              At any age after leaving your employer, you can set up a rigid schedule of annual withdrawals calculated using an IRS life-expectancy method. You must stick to the exact payment schedule for at least five full years or until you reach age 59.5, whichever comes later. Changing the schedule early triggers retroactive 10% penalties plus interest.
+            </li>
+            <li>
+              <strong>Unreimbursed Medical Expenses Over 7.5% of AGI</strong>
+              You can avoid the 10% penalty on withdrawal dollars used to pay qualified out-of-pocket medical expenses that exceed 7.5% of your Adjusted Gross Income (AGI) for that tax year—even if you take the standard deduction instead of itemizing.
+            </li>
+            <li>
+              <strong>Total and Permanent Disability</strong>
+              If a physician certifies that a severe physical or mental condition prevents you from engaging in substantial gainful work and is expected to last indefinitely or result in death, distributions from your 401(k) are exempt from the 10% early withdrawal penalty.
+            </li>
+          </ul>
+        </article>
+
+        <!-- Section 4: FAQ -->
+        <article id="faq" class="content-article">
+          <h2>Frequently Asked Questions</h2>
+          <p>
+            Straight answers to common tax and planning questions before requesting a 401(k) distribution.
+          </p>
+
+          <div class="faq-list">
+            <details class="faq-item" open>
+              <summary>
+                <span>How much tax on 401k withdrawal before 59.5 will I owe?</span>
+                <svg class="faq-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="faq-answer">
+                <p>Most people under age 59.5 lose 30% to 45% of a traditional 401(k) cash-out. You owe ordinary federal income tax at your marginal rate (10% to 37%), applicable state income tax (0% to 13.3%), and a 10% IRS early withdrawal penalty unless you qualify for a specific exception.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span>Can an early 401(k) withdrawal push me into a higher federal tax bracket?</span>
+                <svg class="faq-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="faq-answer">
+                <p>Yes. Pre-tax 401(k) distributions are added on top of your W-2 wages and other taxable income for the year. A large cash-out can push the top portion of your income into the next marginal federal or state bracket, increasing the effective tax rate on those dollars.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span>Why did my plan provider only withhold 20% when my total tax and penalty are higher?</span>
+                <svg class="faq-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="faq-answer">
+                <p>Federal rules require 401(k) administrators to withhold a flat 20% for federal income tax on cash distributions sent directly to you. That 20% is only an upfront deposit, not your final liability. Any remaining federal tax, the 10% early withdrawal penalty, and state taxes are settled when you file your tax return.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span>Is a 401(k) loan better than taking an early withdrawal?</span>
+                <svg class="faq-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="faq-answer">
+                <p>If your employer plan allows loans and your job is stable, a 401(k) loan generally costs far less because you avoid both ordinary income tax and the 10% penalty while repaying interest to your own account. The risk is that leaving your job usually accelerates repayment; any unpaid balance becomes a taxable distribution.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span>Do I owe taxes and the 10% penalty on a Roth 401(k) early withdrawal?</span>
+                <svg class="faq-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="faq-answer">
+                <p>Roth 401(k) early withdrawals follow pro-rata rules. Each dollar withdrawn is split proportionally between your after-tax contributions (which come out tax- and penalty-free) and your investment earnings (which are subject to ordinary income tax and the 10% early withdrawal penalty before age 59.5).</p>
+              </div>
+            </details>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <span class="footer-brand">ClearLedger 401k</span>
+        <div class="footer-links">
+          <a href="#calculator">Calculator</a>
+          <a href="#tax-breakdown">Tax Breakdown</a>
+          <a href="#withholding-trap">20% Withholding</a>
+          <a href="#penalty-exceptions">IRS Exceptions</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </div>
+      <p class="footer-disclaimer">
+        <strong>Educational Disclaimer:</strong> This 401k early withdrawal calculator provides simplified estimates for educational and planning purposes only and does not constitute formal tax, financial, or legal advice. Actual tax liability depends on your filing status, total taxable income, deductions, state-specific early withdrawal rules, and plan terms. Consult a Certified Public Accountant (CPA) or qualified tax advisor before initiating a retirement account distribution.
+      </p>
+      <p class="footer-copy">&copy; 2026 ClearLedger Retirement Tools. Built for US retirement tax estimation.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var DEFAULTS = {
+        amount: 25000,
+        age: 35,
+        federalRate: 22,
+        stateRate: 5,
+        hasException: false
+      };
+
+      var SLIDER_MIN = 1000;
+      var SLIDER_MAX = 500000;
+      var ANNUAL_RETURN = 0.07;
+      var RETIREMENT_AGE = 65;
+
+      function clamp(value, min, max) {
+        if (!Number.isFinite(value)) return min;
+        return Math.min(Math.max(value, min), max);
+      }
+
+      function calculateWithdrawal(params) {
+        var amount = Math.max(0, Number.isFinite(params.amount) ? params.amount : 0);
+        var age = clamp(params.age, 18, 95);
+        var federalRate = clamp(params.federalRate, 0, 50);
+        var stateRate = clamp(params.stateRate, 0, 20);
+        var hasException = Boolean(params.hasException);
+
+        var isUnderPenaltyAge = age < 59.5;
+        var penaltyRate = isUnderPenaltyAge && !hasException ? 10 : 0;
+
+        var penaltyAmount = amount * (penaltyRate / 100);
+        var federalTax = amount * (federalRate / 100);
+        var stateTax = amount * (stateRate / 100);
+
+        var rawTotalLost = penaltyAmount + federalTax + stateTax;
+        var totalLost = Math.min(amount, rawTotalLost);
+        var netCash = Math.max(0, amount - totalLost);
+
+        var effectiveLossPct = amount > 0 ? (totalLost / amount) * 100 : 0;
+        var netKeepPct = amount > 0 ? (netCash / amount) * 100 : 0;
+
+        var yearsTo65 = Math.max(0, RETIREMENT_AGE - age);
+        var futureValueAt65 = amount * Math.pow(1 + ANNUAL_RETURN, yearsTo65);
+        var forfeitedGrowth = Math.max(0, futureValueAt65 - amount);
+
+        var mandatoryWithholding = amount * 0.20;
+        var taxTimeDifference = totalLost - mandatoryWithholding;
+
+        return {
+          amount: amount,
+          age: age,
+          isUnderPenaltyAge: isUnderPenaltyAge,
+          hasException: hasException,
+          penaltyRate: penaltyRate,
+          federalRate: federalRate,
+          stateRate: stateRate,
+          penaltyAmount: penaltyAmount,
+          federalTax: federalTax,
+          stateTax: stateTax,
+          totalLost: totalLost,
+          netCash: netCash,
+          effectiveLossPct: effectiveLossPct,
+          netKeepPct: netKeepPct,
+          yearsTo65: yearsTo65,
+          futureValueAt65: futureValueAt65,
+          forfeitedGrowth: forfeitedGrowth,
+          mandatoryWithholding: mandatoryWithholding,
+          taxTimeDifference: taxTimeDifference
+        };
+      }
+
+      var currencyFormatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0
+      });
+
+      function formatCurrency(val) {
+        return currencyFormatter.format(Math.round(val));
+      }
+
+      function formatPct(val) {
+        return val.toFixed(1) + '%';
+      }
+
+      var amountInput = document.getElementById('withdrawal-amount');
+      var sliderInput = document.getElementById('withdrawal-slider');
+      var ageInput = document.getElementById('current-age');
+      var federalSelect = document.getElementById('federal-bracket');
+      var stateInput = document.getElementById('state-tax-rate');
+      var exceptionCheckbox = document.getElementById('penalty-exception');
+      var resetBtn = document.getElementById('reset-defaults');
+      var presetButtons = document.querySelectorAll('.preset-btn');
+
+      var summaryGrossLabel = document.getElementById('summary-gross-label');
+      var outNetCash = document.getElementById('out-net-cash');
+      var netKeepPctEl = document.getElementById('net-keep-pct');
+      var barLabelKept = document.getElementById('bar-label-kept');
+      var barLabelLost = document.getElementById('bar-label-lost');
+      var barKept = document.getElementById('bar-kept');
+      var barLost = document.getElementById('bar-lost');
+      var barTrack = document.getElementById('breakdown-bar-track');
+
+      var outPenalty = document.getElementById('out-penalty');
+      var outPenaltyNote = document.getElementById('out-penalty-note');
+      var outFederal = document.getElementById('out-federal');
+      var outFederalRate = document.getElementById('out-federal-rate');
+      var outState = document.getElementById('out-state');
+      var outStateRate = document.getElementById('out-state-rate');
+      var outTotalLost = document.getElementById('out-total-lost');
+      var outEffectiveLoss = document.getElementById('out-effective-loss');
+      var outWithholdingNote = document.getElementById('out-withholding-note');
+      var outFutureValue = document.getElementById('out-future-value');
+      var outOpportunityText = document.getElementById('out-opportunity-text');
+      var exceptionStatusNote = document.getElementById('exception-status-note');
+
+      function updateSliderFill(val) {
+        var clamped = clamp(val, SLIDER_MIN, SLIDER_MAX);
+        var pct = ((clamped - SLIDER_MIN) / (SLIDER_MAX - SLIDER_MIN)) * 100;
+        sliderInput.style.setProperty('--slider-pct', pct.toFixed(2) + '%');
+      }
+
+      function updatePresetState(currentAmount) {
+        presetButtons.forEach(function (btn) {
+          var presetVal = Number(btn.getAttribute('data-amount'));
+          btn.setAttribute('aria-pressed', presetVal === currentAmount ? 'true' : 'false');
+        });
+      }
+
+      function render() {
+        var rawAmount = parseFloat(amountInput.value);
+        var rawAge = parseFloat(ageInput.value);
+        var rawFederal = parseFloat(federalSelect.value);
+        var rawState = parseFloat(stateInput.value);
+
+        var res = calculateWithdrawal({
+          amount: Number.isNaN(rawAmount) ? 0 : rawAmount,
+          age: Number.isNaN(rawAge) ? DEFAULTS.age : rawAge,
+          federalRate: Number.isNaN(rawFederal) ? DEFAULTS.federalRate : rawFederal,
+          stateRate: Number.isNaN(rawState) ? 0 : rawState,
+          hasException: exceptionCheckbox.checked
+        });
+
+        updateSliderFill(res.amount);
+        updatePresetState(res.amount);
+
+        summaryGrossLabel.textContent = 'From ' + formatCurrency(res.amount) + ' gross';
+        outNetCash.textContent = formatCurrency(res.netCash);
+        netKeepPctEl.textContent = formatPct(res.netKeepPct) + ' of withdrawal';
+
+        var keptStr = formatPct(res.netKeepPct);
+        var lostStr = formatPct(res.effectiveLossPct);
+
+        barLabelKept.textContent = 'Net Cash Kept: ' + keptStr;
+        barLabelLost.textContent = 'Taxes & Penalty Lost: ' + lostStr;
+        barKept.style.flexBasis = res.amount > 0 ? res.netKeepPct.toFixed(2) + '%' : '0%';
+        barLost.style.flexBasis = res.amount > 0 ? res.effectiveLossPct.toFixed(2) + '%' : '0%';
+        barTrack.setAttribute(
+          'aria-label',
+          'Visual split: ' + keptStr + ' net cash kept versus ' + lostStr + ' lost to taxes and penalty'
+        );
+
+        if (!res.isUnderPenaltyAge) {
+          outPenaltyNote.textContent = '(0% — age 59.5 or older)';
+          exceptionStatusNote.textContent = 'At age 59.5 or older, you are already exempt from the 10% early withdrawal penalty.';
+        } else if (res.hasException) {
+          outPenaltyNote.textContent = '(0% — exception applied)';
+          exceptionStatusNote.textContent = 'Exception active: 10% penalty waived. Federal and state income taxes still apply.';
+        } else {
+          outPenaltyNote.textContent = '(10% under age 59.5)';
+          exceptionStatusNote.textContent = 'Waives the 10% IRS penalty. Ordinary federal and state income taxes still apply.';
+        }
+
+        outPenalty.textContent = res.penaltyAmount > 0 ? '-' + formatCurrency(res.penaltyAmount) : '$0';
+        outPenalty.classList.toggle('is-loss', res.penaltyAmount > 0);
+
+        outFederalRate.textContent = '(' + res.federalRate + '%)';
+        outFederal.textContent = res.federalTax > 0 ? '-' + formatCurrency(res.federalTax) : '$0';
+
+        outStateRate.textContent = '(' + res.stateRate.toFixed(1) + '%)';
+        outState.textContent = res.stateTax > 0 ? '-' + formatCurrency(res.stateTax) : '$0';
+        outState.classList.toggle('is-loss', res.stateTax > 0);
+
+        outTotalLost.textContent = res.totalLost > 0 ? '-' + formatCurrency(res.totalLost) : '$0';
+        outEffectiveLoss.textContent = '(' + lostStr + ' effective loss)';
+
+        if (res.amount <= 0) {
+          outWithholdingNote.innerHTML = '<strong>Plan withholding preview:</strong> Enter a withdrawal amount above $0 to compare mandatory 20% withholding against total taxes.';
+        } else if (res.taxTimeDifference > 0) {
+          outWithholdingNote.innerHTML =
+            '<strong>Plan withholding preview:</strong> Your provider typically withholds 20% (' +
+            formatCurrency(res.mandatoryWithholding) +
+            ') upfront for federal tax, leaving an estimated <strong>' +
+            formatCurrency(res.taxTimeDifference) +
+            '</strong> still owed when you file your federal and state returns.';
+        } else if (res.taxTimeDifference < 0) {
+          outWithholdingNote.innerHTML =
+            '<strong>Plan withholding preview:</strong> Your provider typically withholds 20% (' +
+            formatCurrency(res.mandatoryWithholding) +
+            ') upfront—about <strong>' +
+            formatCurrency(Math.abs(res.taxTimeDifference)) +
+            '</strong> more than your estimated combined tax bill, which may return as a tax refund.';
+        } else {
+          outWithholdingNote.innerHTML =
+            '<strong>Plan withholding preview:</strong> Your provider typically withholds 20% (' +
+            formatCurrency(res.mandatoryWithholding) +
+            ') upfront, matching your estimated combined tax bill.';
+        }
+
+        if (res.amount <= 0) {
+          outFutureValue.textContent = '$0';
+          outOpportunityText.textContent = 'Enter a withdrawal amount above $0 to project how much compounded growth you forfeit by age 65.';
+        } else if (res.yearsTo65 <= 0) {
+          outFutureValue.textContent = formatCurrency(res.amount);
+          outOpportunityText.textContent =
+            'You are already age 65 or older, so no additional pre-65 compounding window remains for this benchmark.';
+        } else {
+          var yearsLabel = Number.isInteger(res.yearsTo65)
+            ? res.yearsTo65 + (res.yearsTo65 === 1 ? ' year' : ' years')
+            : res.yearsTo65.toFixed(1) + ' years';
+          outFutureValue.textContent = formatCurrency(res.futureValueAt65);
+          outOpportunityText.textContent =
+            'Leaving ' +
+            formatCurrency(res.amount) +
+            ' invested for ' +
+            yearsLabel +
+            ' until age 65 at a 7% average annual return could grow to ' +
+            formatCurrency(res.futureValueAt65) +
+            '—meaning this withdrawal forfeits ' +
+            formatCurrency(res.forfeitedGrowth) +
+            ' in compounded growth.';
+        }
+      }
+
+      amountInput.addEventListener('input', function () {
+        var val = parseFloat(amountInput.value);
+        if (Number.isFinite(val)) {
+          sliderInput.value = String(clamp(val, SLIDER_MIN, SLIDER_MAX));
+        }
+        render();
+      });
+
+      sliderInput.addEventListener('input', function () {
+        amountInput.value = sliderInput.value;
+        render();
+      });
+
+      ageInput.addEventListener('input', render);
+      federalSelect.addEventListener('change', render);
+      stateInput.addEventListener('input', render);
+      exceptionCheckbox.addEventListener('change', render);
+
+      presetButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var val = btn.getAttribute('data-amount');
+          amountInput.value = val;
+          sliderInput.value = val;
+          render();
+        });
+      });
+
+      resetBtn.addEventListener('click', function () {
+        amountInput.value = String(DEFAULTS.amount);
+        sliderInput.value = String(DEFAULTS.amount);
+        ageInput.value = String(DEFAULTS.age);
+        federalSelect.value = String(DEFAULTS.federalRate);
+        stateInput.value = String(DEFAULTS.stateRate);
+        exceptionCheckbox.checked = DEFAULTS.hasException;
+        render();
+      });
+
+      window.__calc401k = calculateWithdrawal;
+      render();
+    })();
+  </script>
+</body>
+</html>
